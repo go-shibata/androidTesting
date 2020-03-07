@@ -9,16 +9,18 @@ class TweetRepository {
 
     fun getRecentTweets(): Single<List<Tweet>> {
         return Single.create { emitter ->
-            try {
-                // some I/O task
-                val tweets = listOf(
-                    Tweet("hello", 1),
-                    Tweet("from", 2),
-                    Tweet("world", 3)
-                )
-                emitter.onSuccess(tweets)
-            } catch (error: Throwable) {
-                emitter.onError(error)
+            executor.execute {
+                try {
+                    // some I/O task
+                    val tweets = listOf(
+                        Tweet("hello", 1),
+                        Tweet("from", 2),
+                        Tweet("world", 3)
+                    )
+                    emitter.onSuccess(tweets)
+                } catch (error: Throwable) {
+                    emitter.onError(error)
+                }
             }
         }
     }
